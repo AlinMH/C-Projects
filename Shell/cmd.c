@@ -1,7 +1,7 @@
 /**
  * Operating Systems 2013-2018 - Assignment 2
  *
- * Mihaila Alin-Florin, 334CB
+ *
  *
  */
 #include <stdlib.h>
