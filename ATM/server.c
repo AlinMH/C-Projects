@@ -19,7 +19,7 @@ void error(char *msg)
 
 int main(int argc, char *argv[])
 {
-   	int sockfd, udpsock, newsockfd, portno, clilen;
+	int sockfd, udpsock, newsockfd, portno, clilen;
     char buffer[BUFLEN];
     char* token; // auxiliar pentru strtok
     char* nr_card;
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
 							sprintf(buffer, "UNLOCK> -7 : Deblocare esuata\n");							
 						}
 						
-					    if(sendto(udpsock, buffer, BUFLEN, 0, (struct sockaddr*)&cli_addr, clilen) == -1) {
+					    if (sendto(udpsock, buffer, BUFLEN, 0, (struct sockaddr*)&cli_addr, clilen) == -1) {
                         	error("err sendto");
                        	}
 

@@ -86,18 +86,19 @@ int main(int argc, char *argv[])
                     fgets(buffer, BUFLEN - 1, stdin);
                     fprintf(fp, "%s", buffer);
                     token = strtok(strdup(buffer), " \n");
-                    if(!strcmp(token, "login")) { // la login se pastreaza ultimul card
+                    
+                    if (!strcmp(token, "login")) { // la login se pastreaza ultimul card
                         aux = strdup(buffer);
                         token_aux = strtok(aux, " \n");
                         token_aux = strtok(NULL, " \n");
                         current_card = strdup(token_aux);
                     }
 
-                    if(!strcmp(token, "login") && logged == 1) { // daca in sesiunea curenta sunt deja logat, trimit de la client eroare coresp.
+                    if (!strcmp(token, "login") && logged == 1) { // daca in sesiunea curenta sunt deja logat, trimit de la client eroare coresp.
                         printf("-2 : Sesiune deja deschisa\n");
                         fprintf(fp, "%s", "-2 : Sesiune deja deschisa\n");
                         continue;
-                    } else if(!strcmp(token, "unlock")) { // daca primesc de la tastatura unlock, trimit pe udp unlock <nr_card>
+                    } else if (!strcmp(token, "unlock")) { // daca primesc de la tastatura unlock, trimit pe udp unlock <nr_card>
                         memset(buffer, 0, BUFLEN);
                         sprintf(buffer, "unlock %s", current_card);
                         
@@ -105,20 +106,20 @@ int main(int argc, char *argv[])
                             error("err sendto");
                         }
                         continue;
-                    } else if(!strcmp(token, "logout")) { // daca primesc logout, verific daca sunt logat deja
-                        if(logged == 0) {
+                    } else if (!strcmp(token, "logout")) { // daca primesc logout, verific daca sunt logat deja
+                        if (logged == 0) {
                             printf("-1 : Clientul nu este autentificat\n");
                             fprintf(fp, "%s", "-1 : Clientul nu este autentificat\n");
                             continue;
                         } else { // daca s-a efectuat cu succes, se reseteaza flagul logged
                             logged = 0;
                         }
-                    } else if((!strcmp(token, "listsold") || !strcmp(token, "getmoney") || !strcmp(token, "putmoney")) && logged == 0) {
+                    } else if ((!strcmp(token, "listsold") || !strcmp(token, "getmoney") || !strcmp(token, "putmoney")) && logged == 0) {
                         // daca trimit o comanda specifica userului si nu sunt logat, trimit eroarea coresp.
                         printf("-1 : Clientul nu este autentificat\n");
                         fprintf(fp, "%s", "-1 : Clientul nu este autentificat\n");
                         continue;                        
-                    } else if(!strcmp(token, "quit")) { // se trimite mesajul de quit, si se inchid socketele
+                    } else if (!strcmp(token, "quit")) { // se trimite mesajul de quit, si se inchid socketele
                         n = send(sockfd, buffer, strlen(buffer), 0);
                         
                         if (n < 0) 
@@ -132,7 +133,7 @@ int main(int argc, char *argv[])
                     n = send(sockfd, buffer, strlen(buffer), 0);
                     if (n < 0) 
                         error("ERROR writing to socket");
-                } else if(i == sockfd) {
+                } else if (i == sockfd) {
                     n = recv(sockfd, buffer, sizeof(buffer), 0);
                     
                     if(n <= 0) { // daca nu mai trimite nimic serverul sau am eroare in recv, inchid socketele si fisierul
@@ -157,11 +158,11 @@ int main(int argc, char *argv[])
                         }
                     }
                     
-                    if(strstr(buffer, "Welcome") != NULL) { // daca primesc mesaj de welcome, inseamna ca in sesiunea asta sunt logat
+                    if (strstr(buffer, "Welcome") != NULL) { // daca primesc mesaj de welcome, inseamna ca in sesiunea asta sunt logat
                         logged = 1;
                     }
 
-                } else if(i == udpsock) { 
+                } else if (i == udpsock) { 
                     // primesc pe socketul udp
                     memset(buffer, 0, BUFLEN);
                     
@@ -172,7 +173,7 @@ int main(int argc, char *argv[])
                     printf("%s", buffer);
                     fprintf(fp, "%s", buffer);
                     
-                    if(strstr(buffer, "Trimite") != NULL) { // daca trebuie trimisa parola, o citim de la tastatura
+                    if (strstr(buffer, "Trimite") != NULL) { // daca trebuie trimisa parola, o citim de la tastatura
                         memset(buffer, 0, BUFLEN);
                         
                         fgets(buffer, BUFLEN - 1, stdin);
@@ -181,7 +182,7 @@ int main(int argc, char *argv[])
                         buffer[strlen(buffer) - 1] = 0; // sterg \n de la sfarsit
                         sprintf(aux_buffer, "%s %s", current_card, buffer); // mesajul o sa fie de forma <nr_card> <parola>
                         
-                        if(sendto(udpsock, aux_buffer, BUFLEN, 0, (struct sockaddr*)&serv_addr, addr_len) == -1) {
+                        if (sendto(udpsock, aux_buffer, BUFLEN, 0, (struct sockaddr*)&serv_addr, addr_len) == -1) {
                             error("err sendto");
                         }
                     }
