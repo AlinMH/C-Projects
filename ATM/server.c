@@ -25,14 +25,17 @@ int main(int argc, char *argv[])
     char* nr_card;
     char* parola;
     user* users; // vectorul de useri
+    
     struct sockaddr_in serv_addr, cli_addr; // adresa serverului si a clientului
     int n, i, j, k;
+    
     int no_users; // numarul de useri din fisier
    	int idx_usr;
    	int findRes;
    	int sold;
    	int money;
 	pair* pairs; // perechi de socketi cu useri (adica ce user e logat pe socket) 
+	
 	FILE* fp;
     int fdmax;	 // valoare maxima file descriptor din multimea read_fds
 	
@@ -118,10 +121,12 @@ int main(int argc, char *argv[])
                             if(FD_ISSET(k, &read_fds) && k != sockfd && k != udpsock) {
                    				sprintf(buffer, "ATM> Bye!\n");
                    				send(k, buffer, BUFLEN, 0);
+                   				
                    				close(k); // se inchide socketul
                    			}
                    		}
                    		FD_ZERO(&read_fds);
+                   		
                    		close(sockfd);
                    		close(udpsock);
                    		return 0;
@@ -150,7 +155,7 @@ int main(int argc, char *argv[])
 					printf ("Am primit de la clientul de pe socketul %d (UDP), mesajul: %s\n", i, buffer);	
 
 					token = strtok(buffer, " \n");
-					 if (!strcmp(token, "unlock")) { // daca se primeste comanda unlock <nr_card>
+					if (!strcmp(token, "unlock")) { // daca se primeste comanda unlock <nr_card>
 						token = strtok(NULL, " \n");
 
 						// se verifica daca s-a gasit userul si daca este blocat sau nu, si se trimite la client
@@ -186,6 +191,7 @@ int main(int argc, char *argv[])
 							}else { // cardul era blocat, si-l deblocam
 								memset(buffer, 0, BUFLEN);
 								sprintf(buffer, "UNLOCK> Client deblocat\n");
+								
 								users[idx_usr].blocat = 0;
 								users[idx_usr].incercari = 0;
 							}

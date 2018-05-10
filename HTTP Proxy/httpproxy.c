@@ -45,7 +45,9 @@ void parse_command(char* command, char* dname, int* port) {
 
 	token = strtok(command_copy, " \n");
 	token = strtok(NULL, " ");
+	
 	sscanf(token, "http://%99[^/\n]", aux);
+	
 	if(strstr(aux, ":")) { // daca se specifica port-ul in url, se extrage
 		token = strtok(aux, ":\n");
 		sscanf(token, "%s", dname);
@@ -155,6 +157,7 @@ int main(int argc, char *argv[])
 						parse_command(buffer, dname, &port);
 
 						he = gethostbyname(dname);
+						
 						if(he != NULL) {
 							if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 								error("Eroare creare socket");
@@ -198,10 +201,9 @@ int main(int argc, char *argv[])
 		}
     }
 
-
-     close(sockfd);
+    close(sockfd);
    
-     return 0; 
+    return 0; 
 }
 
 

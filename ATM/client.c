@@ -22,11 +22,14 @@ int main(int argc, char *argv[])
     int sockfd, udpsock, n, i;
     int logged = 0; // flag pentru sesiune deja deschisa
     struct sockaddr_in serv_addr;
+    
     char* token;
     char* token_aux;
+    
     char* current_card; // cardul retinut de la ultimul login
     char* aux;
     char aux_buffer[BUFLEN];
+    
     int addr_len = sizeof(serv_addr);
     char client_file[FNAMELEN];
     char buffer[BUFLEN];
@@ -97,6 +100,7 @@ int main(int argc, char *argv[])
                     } else if(!strcmp(token, "unlock")) { // daca primesc de la tastatura unlock, trimit pe udp unlock <nr_card>
                         memset(buffer, 0, BUFLEN);
                         sprintf(buffer, "unlock %s", current_card);
+                        
                         if(sendto(udpsock, buffer, BUFLEN, 0, (struct sockaddr*)&serv_addr, addr_len) == -1) {
                             error("err sendto");
                         }
@@ -116,8 +120,10 @@ int main(int argc, char *argv[])
                         continue;                        
                     } else if(!strcmp(token, "quit")) { // se trimite mesajul de quit, si se inchid socketele
                         n = send(sockfd, buffer, strlen(buffer), 0);
+                        
                         if (n < 0) 
                             error("ERROR writing to socket");
+                        
                         close(sockfd);
                         close(udpsock);
                         return 0;
@@ -128,10 +134,13 @@ int main(int argc, char *argv[])
                         error("ERROR writing to socket");
                 } else if(i == sockfd) {
                     n = recv(sockfd, buffer, sizeof(buffer), 0);
+                    
                     if(n <= 0) { // daca nu mai trimite nimic serverul sau am eroare in recv, inchid socketele si fisierul
                         error("err recv");
+                        
                         close(sockfd);
                         close(udpsock);
+                        
                         FD_ZERO(&read_fds);
                         fclose(fp);
                         return 0;
@@ -147,6 +156,7 @@ int main(int argc, char *argv[])
                             fprintf(fp, "%s", buffer);
                         }
                     }
+                    
                     if(strstr(buffer, "Welcome") != NULL) { // daca primesc mesaj de welcome, inseamna ca in sesiunea asta sunt logat
                         logged = 1;
                     }
@@ -154,17 +164,23 @@ int main(int argc, char *argv[])
                 } else if(i == udpsock) { 
                     // primesc pe socketul udp
                     memset(buffer, 0, BUFLEN);
+                    
                     if(recvfrom(udpsock, buffer, BUFLEN, 0, (struct sockaddr*)&serv_addr, (socklen_t*)&addr_len) == -1) {
                         error("recvfrom");
                     }
+                    
                     printf("%s", buffer);
                     fprintf(fp, "%s", buffer);
+                    
                     if(strstr(buffer, "Trimite") != NULL) { // daca trebuie trimisa parola, o citim de la tastatura
                         memset(buffer, 0, BUFLEN);
+                        
                         fgets(buffer, BUFLEN - 1, stdin);
                         fprintf(fp, "%s", buffer);
+                        
                         buffer[strlen(buffer) - 1] = 0; // sterg \n de la sfarsit
                         sprintf(aux_buffer, "%s %s", current_card, buffer); // mesajul o sa fie de forma <nr_card> <parola>
+                        
                         if(sendto(udpsock, aux_buffer, BUFLEN, 0, (struct sockaddr*)&serv_addr, addr_len) == -1) {
                             error("err sendto");
                         }
@@ -175,5 +191,3 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
-
-
