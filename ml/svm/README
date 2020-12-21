@@ -1,0 +1,36 @@
+Mihaila Alin-Florin
+343C1
+
+-- Detalii implementare --
+
+Set de date: skin_nonskin
+Nr. clase: 2
+
+Procesare date :
+    A fost nevoie sa filtrez datele, sa obtin numai inregistrari unice,
+    apoi am dat shuffle la inregistrari, pentru ca sa nu dau predict doar pe
+    clasa 2.
+
+A fost nevoie sa impart datele 70% train, 30% test. Folosind functia svm_train
+am obtinut modelul pe care l-am folosit pentru predictia claselor din setul de test.
+Dupa, am folosit rezultatele ca sa afisez matricea de confuzie.
+
+
+Problema: news20
+Nr. clase: 20
+
+Metoda: One vs. All
+
+Pentru metoda OvA, a trebuir sa antrenez 20 de modele, fiecare model a fost antrenat
+pentru a distinge clasa specifica lui de celelalte (clasa/nonclasa)
+Am folosit optiunea -b 1 pentru train si predict, deoarece doresc sa iau probabilitatile
+pentru clasa si nonclasa, ca sa pot sa fac predictia finala.
+Predictia finala se face luand fiecare inregistrare din setul de test si se ia probabilitatea
+cea mai mare de la fiecare model in parte, iar cine are probabilitatea maxima, acela da si clasa rezultat.
+
+Metoda: One vs. One
+
+Pentru metoda OvO, am luat fiecare pereche in parte de classe i, j (in total K(K-1)/2 perechi, K=nr. clase)
+si am filtrat datele de antrenare ca sa contina doar inregistrarile din clasele i si j. Am obtinut modelul
+apoi am luat clasele prezise si la sfarsit pentru fiecare inregistrare din setul de test am
+luat votul majoritar de la fiecare model in parte.

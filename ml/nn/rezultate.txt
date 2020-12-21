@@ -1,0 +1,41 @@
+Simple cnn 10ep:
+Test accuracy per study 0.6478174603174603
+Test accuracy per image 0.6343446981545199
+Train accuracy per study 0.7054381878062495
+Train accuracy per image 0.6893066724625081
+
+Simple cnn 20ep:
+Test accuracy per study 0.7023809523809523
+Test accuracy per image 0.6825148576790742
+Train accuracy per study 0.7886577235119286
+Train accuracy per image 0.7558954575092371
+
+Multi layers cnn 10ep:
+Test accuracy per study 0.6537698412698413
+Test accuracy per image 0.6380982170785111
+Train accuracy per study 0.6892119848983854
+Train accuracy per image 0.6679797870028255
+
+Multi layers cnn 20ep:
+Test accuracy per study 0.6765873015873016
+Test accuracy per image 0.6668751954957773
+Train accuracy per study 0.7649610410474736
+Train accuracy per image 0.744403390567268
+
+Feature maps cnn 10ep:
+Test accuracy per study 0.6765873015873016
+Test accuracy per image 0.6593681576477948
+Train accuracy per study 0.7230299622459635
+Train accuracy per image 0.6951206259508802
+
+Feature maps cnn 20ep:
+Test accuracy per study 0.6845238095238095
+Test accuracy per image 0.6659368157647795
+Train accuracy per study 0.753393846895333
+Train accuracy per image 0.7341610519452293
+
+Feature maps v2 cnn 20ep:
+Test accuracy per study 0.7023809523809523
+Test accuracy per image 0.6759461995620895
+Train accuracy per study 0.776608562936782
+Train accuracy per image 0.7514942403825255
